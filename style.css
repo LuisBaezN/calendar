@@ -1,0 +1,62 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+}
+
+body{
+    margin: 3%;
+    padding: 0%;
+    background-color: slategrey;
+}
+
+header{
+    background-color: seagreen;
+    height: 120px;
+    display: grid;
+    align-items: center;
+}
+
+section{
+    background-image: url(assets/template.png);
+    background-size: contain;
+    background-position: cover;
+    width: 1280px;
+    height: 720px;
+}
+
+footer{
+    background-color: rgb(54, 0, 126);
+    height: 200px;
+}
+
+/*////////////////////////// Position and size //////////////////////////*/
+
+.nombreM{
+    position: relative;
+    top: 60px;
+    left: 170px;
+    width: 300px;
+    height: 50px;
+}
+
+.mes{
+    position: relative;
+    top: 85px;
+    left: 73px;
+    width: 760px;
+    height: 510px;
+    background-color: rgba(229, 255, 255,30%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.dia{
+    position: relative;
+    width: 105px;
+    height: 85px;
+}
+
+.instr{
+    background-color: antiquewhite;
+}
