@@ -3,7 +3,7 @@
 function adjustInd(i, rot = false){
     let lim = 6;
     if (rot === true){
-        lim = 7;
+        lim = 5;
     }
     i++;
     if (i > lim){
@@ -27,9 +27,9 @@ function calcFirst(year){
 }
 
 function addData(mes_l, nom_s, r, ind){
-    const tios = ['Toña', 'Dulce', 'Chela', 'Andrés', 'Elías', 'Goyo', 'Betty', 'Paty'];
+    const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty'];
 
-    let inicio = 198; // change this to indicate the start of each uncle
+    let inicio = 222; // change this to indicate the start of each uncle
 
     let data = [];
 
@@ -39,9 +39,20 @@ function addData(mes_l, nom_s, r, ind){
             data.push([dias[nom_s], d, '']);
             nom_s = adjustInd(nom_s);
         } else{
-            data.push([dias[nom_s], d, tios[r]]);
-            nom_s = adjustInd(nom_s);
-            r = adjustInd(r, true);
+            switch(nom_s){
+                case 3:
+                    data.push([dias[nom_s], d, 'Chela']);
+                    nom_s = adjustInd(nom_s);
+                    break;
+                case 4:
+                    data.push([dias[nom_s], d, 'Andrés']);
+                    nom_s = adjustInd(nom_s);
+                    break;
+                default:
+                    data.push([dias[nom_s], d, tios[r]]);
+                    nom_s = adjustInd(nom_s);
+                    r = adjustInd(r, true);
+            }
         }
         ind++;
     }
