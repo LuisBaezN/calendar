@@ -138,7 +138,7 @@ function voidDays(days){
     }
 }
 
-function repres(ini){
+function repres(ini = false){
     let mes_doc = document.getElementById("mes-struct")
     let reque = meses[mes];
     let res = 0;
@@ -204,6 +204,6 @@ repres(true);
 
 window.addEventListener("keyup", function(event) {
     if (event.key === 'Enter'){
-        repres(false);
+        repres();
     }
 });
