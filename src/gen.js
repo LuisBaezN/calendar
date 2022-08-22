@@ -138,16 +138,19 @@ function voidDays(days){
     }
 }
 
-function repres(){
-    const req_doc = document.getElementById("request");
+function repres(ini){
     let mes_doc = document.getElementById("mes-struct")
-    let reque = req_doc.value.toTitleCase();
-    let d_void = 42 - datos[reque].length
+    let reque = meses[mes];
     let res = 0;
+    if (ini == false){
+        const req_doc = document.getElementById("request");
+        reque = req_doc.value.toTitleCase();
+    }
 
     mes_doc.innerHTML = '';
 
-    if (meses.includes(reque) === true){
+    if (meses.includes(reque)){
+        let d_void = 42 - datos[reque].length;
         if (datos[reque][0][0] === 'Domingo'){
             insertDays(reque);
             voidDays(d_void);
@@ -187,7 +190,20 @@ function repres(){
 
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+const hoy = new Date();
+const [dia, mes, anio] = [hoy.getDate(), hoy.getMonth(), hoy.getFullYear()];
 
 let datos= {};
 
 datos = genCalen();
+
+const yearDOM = document.getElementById("year");
+yearDOM.innerHTML = "<h2>" + anio + "</h2>";
+
+repres(true);
+
+window.addEventListener("keyup", function(event) {
+    if (event.key === 'Enter'){
+        repres(false);
+    }
+});
