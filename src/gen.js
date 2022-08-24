@@ -145,6 +145,7 @@ function repres(ini = false){
     if (ini == false){
         const req_doc = document.getElementById("request");
         reque = req_doc.value.toTitleCase();
+        reque = reque.trim();
     }
 
     mes_doc.innerHTML = '';

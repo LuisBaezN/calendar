@@ -11,9 +11,8 @@ body{
 
 header{
     background-color: seagreen;
+    width: 1280px;
     height: 120px;
-    display: grid;
-    align-items: center;
 }
 
 section{
@@ -22,6 +21,7 @@ section{
     background-position: cover;
     width: 1280px;
     height: 720px;
+    
 }
 
 footer{
@@ -59,6 +59,7 @@ footer{
 
 .instr{
     background-color: antiquewhite;
+    width: 1280px;
 }
 
 .year{
