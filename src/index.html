@@ -10,18 +10,16 @@
 </head>
 <body>
     <header>
-        <h1>Generador de calandario</h1>
+        <h1>Calendario de cuidados</h1>
     </header>
-
+    <br>
     <div class="instr">
-        <h3>Instrucciones:</h3>
-        <p>
-            Introduzca el mes que desea generar.
-        </p>
+        <h3>Instrucciones</h3>
 
-        <label for="gen">Mes: </label>
-        <input type="text" name="gen" id="request">
-        <button onclick="repres()">Generar</button>
+        <label for="mes">Introduzca el mes y año que desea consultar:</label>
+        <br>
+        <input type="month" name="mes" id="req">
+        <button onclick="repres()">Consultar</button>
         <br>
         <br>
     </div>
@@ -33,6 +31,6 @@
         <div class="mes" id="mes-struct"></div>
     </section>
 
-    <div class="year" id="year"> </div>
+    <div class="year" id="year"></div>
 </body>
 </html>

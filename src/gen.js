@@ -28,13 +28,10 @@ function calcFirst(year){
 
 function addData(mes_l, nom_s, r, ind){
     const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty'];
-
-    let inicio = 222; // change this to indicate the start of each uncle
-
+    let inicio = 222; // change this to indicate the start
     let data = [];
 
     for (let d = 1; d <= mes_l; d++){
-
         if (ind < inicio){
             data.push([dias[nom_s], d, '']);
             nom_s = adjustInd(nom_s);
@@ -59,55 +56,57 @@ function addData(mes_l, nom_s, r, ind){
     return [nom_s, r, ind, data]
 }
 
-function genCalen(year = 2022){
-    let r = 0;
-    let ind = 1;
-    let data = {};
-    let days = 1;
+function genCalen(year){
+    if (mem != year){
+        let r = 0;
+        let ind = 1;
+        let data = {};
+        let days = 1;
 
-    if (year % 4 === 0){
-        days = 366;
-    } else {
-        days = 365;
-    }
-
-    let nom_sem = calcFirst(year);
-    let mes_long = 1;
-    let ret = [];
-
-    for (let m = 0; m < 12; m++){
-        if (m <= 6){
-            if (m % 2 === 0){
-                mes_long = 31;
-            } else{
-                if (m === 1 && days === 365){
-                    mes_long = 28; 
-                } else if (m === 1 && days === 366){
-                    mes_long = 29;
-                } else{
-                    mes_long = 30;
-                }
-            }
-            ret = addData(mes_long, nom_sem, r, ind);
-            nom_sem = ret[0];
-            r = ret[1];
-            ind = ret[2];
-            data[meses[m]] = ret[3];
-        } else{
-            if (m % 2 === 0){
-                mes_long = 30;
-            } else{
-                mes_long = 31;
-            }
-            ret = addData(mes_long, nom_sem, r, ind);
-            nom_sem = ret[0];
-            r = ret[1];
-            ind = ret[2];
-            data[meses[m]] = ret[3];
+        if (year % 4 === 0){
+            days = 366;
+        } else {
+            days = 365;
         }
+    
+        let nom_sem = calcFirst(year);
+        let mes_long = 1;
+        let ret = [];
+    
+        for (let m = 0; m < 12; m++){
+            if (m <= 6){
+                if (m % 2 === 0){
+                    mes_long = 31;
+                } else{
+                    if (m === 1 && days === 365){
+                        mes_long = 28; 
+                    } else if (m === 1 && days === 366){
+                        mes_long = 29;
+                    } else{
+                        mes_long = 30;
+                    }
+                }
+                ret = addData(mes_long, nom_sem, r, ind);
+                nom_sem = ret[0];
+                r = ret[1];
+                ind = ret[2];
+                data[meses[m]] = ret[3];
+            } else{
+                if (m % 2 === 0){
+                    mes_long = 30;
+                } else{
+                    mes_long = 31;
+                }
+                ret = addData(mes_long, nom_sem, r, ind);
+                nom_sem = ret[0];
+                r = ret[1];
+                ind = ret[2];
+                data[meses[m]] = ret[3];
+            }
+        }
+        mem = year;
+        return data;
     }
-
-    return data;
 }
 
 /*//////////////////////////////////////// Interfaz ////////////////////////////////////////*/
@@ -138,53 +137,53 @@ function voidDays(days){
     }
 }
 
-function repres(ini = false){
+function repres(consul = true){
     let mes_doc = document.getElementById("mes-struct")
     let reque = meses[mes];
     let res = 0;
-    if (ini == false){
-        const req_doc = document.getElementById("request");
-        reque = req_doc.value.toTitleCase();
-        reque = reque.trim();
+    if (consul){
+        const req_doc = document.getElementById("req");
+        reque = meses[Number(req_doc.value.slice(5,7)) - 1];
+        anio = Number(req_doc.value.slice(0,4));
+        genCalen(anio);
     }
 
     mes_doc.innerHTML = '';
 
-    if (meses.includes(reque)){
-        let d_void = 42 - datos[reque].length;
-        if (datos[reque][0][0] === 'Domingo'){
-            insertDays(reque);
-            voidDays(d_void);
-        } else {
-            switch (datos[reque][0][0]){
-                case 'Lunes':
-                    res = 1;
-                    break;
-                case 'Martes':
-                    res = 2;
-                    break;
-                case 'Miercoles':
-                    res = 3;
-                    break;
-                case 'Jueves':
-                    res = 4;
-                    break;
-                case 'Viernes':
-                    res = 5;
-                    break;
-                case 'Sabado':
-                    res = 6;
-                    break;
-                default:
-                    console.log('Verifique los días de la semana.')
-            }
-            voidDays(res);
-            insertDays(reque);
-            voidDays(d_void-res);
-        }
+    let d_void = 42 - datos[reque].length;
+    if (datos[reque][0][0] === 'Domingo'){
+        insertDays(reque);
+        voidDays(d_void);
     } else {
-        alert("Nombre del mes no válido, verifique que esté bien escrito. \n\nNota: No importan las mayúsculas y minúsculas.");
+        switch (datos[reque][0][0]){
+            case 'Lunes':
+                res = 1;
+                break;
+            case 'Martes':
+                res = 2;
+                break;
+            case 'Miercoles':
+                res = 3;
+                break;
+            case 'Jueves':
+                res = 4;
+                break;
+            case 'Viernes':
+                res = 5;
+                break;
+            case 'Sabado':
+                res = 6;
+                break;
+            default:
+                console.log('Verifique los días de la semana.')
+        }
+        voidDays(res);
+        insertDays(reque);
+        voidDays(d_void-res);
     }
+
+    yearDOM.innerHTML = "<h2>" + anio + "</h2>";
+
 }
 
 /*////////////////////////////////////////// Main //////////////////////////////////////////*/
@@ -192,16 +191,15 @@ function repres(ini = false){
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const hoy = new Date();
-const [dia, mes, anio] = [hoy.getDate(), hoy.getMonth(), hoy.getFullYear()];
+let [dia, mes, anio] = [hoy.getDate(), hoy.getMonth(), hoy.getFullYear()];
+const yearDOM = document.getElementById("year");
+let mem = 1991;
 
 let datos= {};
 
-datos = genCalen();
+datos = genCalen(anio);
 
-const yearDOM = document.getElementById("year");
-yearDOM.innerHTML = "<h2>" + anio + "</h2>";
-
-repres(true);
+repres(false);
 
 window.addEventListener("keyup", function(event) {
     if (event.key === 'Enter'){

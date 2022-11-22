@@ -4,7 +4,7 @@
 }
 
 body{
-    margin: 3%;
+    margin: 0%;
     padding: 0%;
     background-color: slategrey;
 }
@@ -12,7 +12,7 @@ body{
 header{
     background-color: seagreen;
     width: 1280px;
-    height: 120px;
+    height: 60px;
 }
 
 section{
@@ -60,6 +60,7 @@ footer{
 .instr{
     background-color: antiquewhite;
     width: 1280px;
+    padding: 2vh;
 }
 
 .year{
