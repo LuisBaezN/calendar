@@ -12,24 +12,13 @@ function adjustInd(i, rot = false){
     return i;
 }
 
-function calcFirst(year){
-    // Default data
-    let dia_ini = [2021, 5];
-
-    for(let i = 0; i < year - dia_ini[0]; i++){
-        if (i % 4 === 0 && i != 0){
-            dia_ini[1] = adjustInd(dia_ini[1]);
-        }
-        dia_ini[1] = adjustInd(dia_ini[1]);
-    }
-
-    return dia_ini[1]
-}
-
-function addData(mes_l, nom_s, r, ind){
+function addData(mes_l, nom_s, r, ind, year){
     const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty'];
-    let inicio = 222; // change this to indicate the start
     let data = [];
+    let inicio = 222; // change this to indicate the start
+    if (year != 2022){
+        inicio = 0;
+    }
 
     for (let d = 1; d <= mes_l; d++){
         if (ind < inicio){
@@ -53,60 +42,95 @@ function addData(mes_l, nom_s, r, ind){
         }
         ind++;
     }
-    return [nom_s, r, ind, data]
+    return [nom_s, r, ind, data];
+}
+
+function calcFirstDay(year){
+    let day_one = [2021, 5] // Referencia
+    for (let i = 0; i < year - day_one[0]; i++){
+        if (i % 4 === 0 && i != 0 ){
+            day_one[1] = adjustInd(day_one[1]);
+        }
+        day_one[1] = adjustInd(day_one[1]);
+    }
+    return day_one[1];
+}
+
+/*
+2023 0
+2024 3
+2025 1
+2026 4
+2027 0
+2028 3
+2029 1
+2030 4
+*/
+function calcFirstSibling(y){
+    switch(y){
+    case 2024:
+        return 3;
+    case 2025:
+        return 1;
+    case 2026:
+        return 4;
+    case 2028:
+        return 3;
+    case 2029:
+        return 1;
+    case 2030:
+        return 4;
+    default:
+        return 0;
+    }
 }
 
 function genCalen(year){
-    if (mem != year){
-        let r = 0;
-        let ind = 1;
-        let data = {};
-        let days = 1;
+    let r = calcFirstSibling(year);
+    console.log(typeof r, r);
+    let ind = 1;
+    let data = {};
+    let days = 1;
 
-        if (year % 4 === 0){
-            days = 366;
-        } else {
-            days = 365;
-        }
-    
-        let nom_sem = calcFirst(year);
-        let mes_long = 1;
-        let ret = [];
-    
-        for (let m = 0; m < 12; m++){
-            if (m <= 6){
-                if (m % 2 === 0){
-                    mes_long = 31;
-                } else{
-                    if (m === 1 && days === 365){
-                        mes_long = 28; 
-                    } else if (m === 1 && days === 366){
-                        mes_long = 29;
-                    } else{
-                        mes_long = 30;
-                    }
-                }
-                ret = addData(mes_long, nom_sem, r, ind);
-                nom_sem = ret[0];
-                r = ret[1];
-                ind = ret[2];
-                data[meses[m]] = ret[3];
+    if (year % 4 === 0){
+        days = 366;
+    } else {
+        days = 365;
+    }
+
+    let first_day = calcFirstDay(year);
+    let mes_long = 0;
+    let ret = [];
+
+    for (let m = 0; m < 12; m++){
+        if (m <= 6){
+            if (m % 2 === 0){
+                mes_long = 31;
             } else{
-                if (m % 2 === 0){
-                    mes_long = 30;
+                if (m === 1 && days === 365){
+                    mes_long = 28; 
+                } else if (m === 1 && days === 366){
+                    mes_long = 29;
                 } else{
-                    mes_long = 31;
+                    mes_long = 30;
                 }
-                ret = addData(mes_long, nom_sem, r, ind);
-                nom_sem = ret[0];
-                r = ret[1];
-                ind = ret[2];
-                data[meses[m]] = ret[3];
+            }
+        } else{
+            if (m % 2 === 0){
+                mes_long = 30;
+            } else{
+                mes_long = 31;
             }
         }
-        mem = year;
-        return data;
+        ret = addData(mes_long, first_day, r, ind, year);
+        first_day = ret[0];
+        r = ret[1];
+        ind = ret[2];
+        data[meses[m]] = ret[3];
     }
+    mem = year;
+    console.log('> Database updated', data)
+    return data;
 }
 
 /*//////////////////////////////////////// Interfaz ////////////////////////////////////////*/
@@ -145,7 +169,9 @@ function repres(consul = true){
         const req_doc = document.getElementById("req");
         reque = meses[Number(req_doc.value.slice(5,7)) - 1];
         anio = Number(req_doc.value.slice(0,4));
-        genCalen(anio);
+        if (anio != mem){
+            datos = genCalen(anio);
+        }
     }
 
     mes_doc.innerHTML = '';
