@@ -1,10 +1,41 @@
 'use strict';
 
-function adjustInd(i, rot = false){
-    let lim = 6;
-    if (rot === true){
-        lim = 5;
+/*////////////////////////////////////////// Variables //////////////////////////////////////////*/
+
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+const hoy = new Date();
+let [dia, mes, anio] = [hoy.getDate(), hoy.getMonth(), hoy.getFullYear()];
+const yearDOM = document.getElementById("year");
+let mem = 1991;
+
+let datos= {};
+
+/*////////////////////////////////////////// Functions //////////////////////////////////////////*/
+
+/**
+ * Modifies index by certain limit
+ * @param {int} i 
+ * @param {boolean} rot 
+ * @returns 
+ */
+function adjustInd(i, rot){
+    let lim = null;
+
+    switch (rot) {
+        case 'days':
+            lim = 6;
+            break;
+        case 'uncles':
+            lim = 5;
+            break;
+        case 'siblings':
+            lim = 4;
+            break;
+        default:
+            console.log('> Error at index control');
     }
+    
     i++;
     if (i > lim){
         return 0;
@@ -12,8 +43,9 @@ function adjustInd(i, rot = false){
     return i;
 }
 
-function addData(mes_l, nom_s, r, ind, year){
-    const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty'];
+function addData(mes_l, nom_s, r, ind, sib, year){
+    const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty']; 
+    const herm = ['(D)','(L)','(C)','(R)']; // Modify to ['(R)','(D)','(L)','(C)'] before 2017!!!!!!!!!!!!
     let data = [];
     let inicio = 222; // change this to indicate the start
     if (year != 2022){
@@ -21,24 +53,26 @@ function addData(mes_l, nom_s, r, ind, year){
     }
 
     for (let d = 1; d <= mes_l; d++){
-        if (ind < inicio){
-            data.push([dias[nom_s], d, '']);
-            nom_s = adjustInd(nom_s);
-        } else{
-            switch(nom_s){
-                case 3:
-                    data.push([dias[nom_s], d, 'Chela']);
-                    nom_s = adjustInd(nom_s);
-                    break;
-                case 4:
-                    data.push([dias[nom_s], d, 'Andrés']);
-                    nom_s = adjustInd(nom_s);
-                    break;
-                default:
+        switch(nom_s){
+            case 3:
+                data.push([dias[nom_s], d, 'Chela']);
+                nom_s = adjustInd(nom_s, 'days');
+                break;
+            case 4:
+                data.push([dias[nom_s], d, 'Andrés']);
+                nom_s = adjustInd(nom_s, 'days');
+                break;
+            default:
+                if (tios[r] == 'Toña'){
+                    data.push([dias[nom_s], d, tios[r] + herm[sib]]);
+                    console.log(sib);
+                    sib = adjustInd(sib, 'siblings');
+                    console.log(sib);
+                } else {
                     data.push([dias[nom_s], d, tios[r]]);
-                    nom_s = adjustInd(nom_s);
-                    r = adjustInd(r, true);
-            }
+                }
+                nom_s = adjustInd(nom_s, 'days');
+                r = adjustInd(r, 'uncles');
         }
         ind++;
     }
@@ -49,9 +83,9 @@ function calcFirstDay(year){
     let day_one = [2021, 5] // Referencia
     for (let i = 0; i < year - day_one[0]; i++){
         if (i % 4 === 0 && i != 0 ){
-            day_one[1] = adjustInd(day_one[1]);
+            day_one[1] = adjustInd(day_one[1], 'days');
         }
-        day_one[1] = adjustInd(day_one[1]);
+        day_one[1] = adjustInd(day_one[1], 'days');
     }
     return day_one[1];
 }
@@ -91,6 +125,7 @@ function genCalen(year){
     let ind = 1;
     let data = {};
     let days = 1;
+    let sib = 0;
 
     if (year % 4 === 0){
         days = 366;
@@ -122,7 +157,7 @@ function genCalen(year){
                 mes_long = 31;
             }
         }
-        ret = addData(mes_long, first_day, r, ind, year);
+        ret = addData(mes_long, first_day, r, ind, sib, year);
         first_day = ret[0];
         r = ret[1];
         ind = ret[2];
@@ -213,15 +248,6 @@ function repres(consul = true){
 }
 
 /*////////////////////////////////////////// Main //////////////////////////////////////////*/
-
-const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
-const hoy = new Date();
-let [dia, mes, anio] = [hoy.getDate(), hoy.getMonth(), hoy.getFullYear()];
-const yearDOM = document.getElementById("year");
-let mem = 1991;
-
-let datos= {};
 
 datos = genCalen(anio);
 
