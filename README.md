@@ -1,9 +1,9 @@
-# Aplicación
+# Motivation
 
-El presente proyecto se realizó para generar automáticamente los días de cuidado que le tocan a cada integrante de la familia.
+This proyect generates the grandmother daycare for each family member.
 
-link a el sitio: https://orange-rock-0fdb9da10.2.azurestaticapps.net/
+Link to the web: https://orange-rock-0fdb9da10.2.azurestaticapps.net/
 
 ## Notas
 
-Dentro del proyecto se encuentra un script para generar todos los datos del calendario en un archivo de texto implementado en python.
+There is also a script in python that generates the data of the calendar.
