@@ -27,9 +27,6 @@ function adjustInd(i, rot){
             lim = 6;
             break;
         case 'uncles':
-            lim = 5;
-            break;
-        case 'siblings':
             lim = 4;
             break;
         default:
@@ -43,9 +40,8 @@ function adjustInd(i, rot){
     return i;
 }
 
-function addData(mes_l, nom_s, r, ind, sib, year){
-    const tios = ['Toña', 'Dulce', 'Elías', 'Goyo', 'Betty', 'Paty']; 
-    const herm = ['(D)','(L)','(C)','(R)']; // Modify to ['(R)','(D)','(L)','(C)'] before 2017!!!!!!!!!!!!
+function addData(mes_l, nom_s, r, ind, year){
+    const tios = ['Goyo', 'Paty', 'Toña', 'Dulce', 'Elías']; 
     let data = [];
     let inicio = 222; // change this to indicate the start
     if (year != 2022){
@@ -54,6 +50,10 @@ function addData(mes_l, nom_s, r, ind, sib, year){
 
     for (let d = 1; d <= mes_l; d++){
         switch(nom_s){
+            case 1:
+                data.push([dias[nom_s], d, 'Betty']);
+                nom_s = adjustInd(nom_s, 'days');
+                break;
             case 3:
                 data.push([dias[nom_s], d, 'Chela']);
                 nom_s = adjustInd(nom_s, 'days');
@@ -63,14 +63,7 @@ function addData(mes_l, nom_s, r, ind, sib, year){
                 nom_s = adjustInd(nom_s, 'days');
                 break;
             default:
-                if (tios[r] == 'Toña'){
-                    data.push([dias[nom_s], d, tios[r] + herm[sib]]);
-                    console.log(sib);
-                    sib = adjustInd(sib, 'siblings');
-                    console.log(sib);
-                } else {
-                    data.push([dias[nom_s], d, tios[r]]);
-                }
+                data.push([dias[nom_s], d, tios[r]]);
                 nom_s = adjustInd(nom_s, 'days');
                 r = adjustInd(r, 'uncles');
         }
@@ -80,40 +73,48 @@ function addData(mes_l, nom_s, r, ind, sib, year){
 }
 
 function calcFirstDay(year){
-    let day_one = [2021, 5] // Referencia
-    for (let i = 0; i < year - day_one[0]; i++){
-        if (i % 4 === 0 && i != 0 ){
-            day_one[1] = adjustInd(day_one[1], 'days');
-        }
-        day_one[1] = adjustInd(day_one[1], 'days');
-    }
-    return day_one[1];
+    let date_string = year + '-01-01T00:00:00';
+    let date_obj = new Date(date_string);
+    let first_week_day = date_obj.getDay();
+    
+    return first_week_day;
 }
 
 /*
-2023 0
-2024 3
-2025 1
-2026 4
-2027 0
-2028 3
-2029 1
-2030 4
+2025 2
+2026 0
+2027 3
+2028 2
+2029 2
+2030 0
+2031 4
+2032 2
+2033 1
+2034 0
+2035 4
 */
 function calcFirstSibling(y){
     switch(y){
     case 2024:
         return 3;
     case 2025:
-        return 1;
-    case 2026:
-        return 4;
-    case 2028:
+        return 2;
+    case 2027:
         return 3;
+    case 2028:
+        return 2;
     case 2029:
-        return 1;
-    case 2030:
+        return 2;
+    case 2031:
         return 4;
+    case 2032:
+        return 2;
+    case 2033:
+        return 1;   
+    case 2035:
+        return 4;    
+    case 2036:
+        return 2;    
     default:
         return 0;
     }
@@ -121,11 +122,9 @@ function calcFirstSibling(y){
 
 function genCalen(year){
     let r = calcFirstSibling(year);
-    console.log(typeof r, r);
     let ind = 1;
     let data = {};
     let days = 1;
-    let sib = 0;
 
     if (year % 4 === 0){
         days = 366;
@@ -157,7 +156,7 @@ function genCalen(year){
                 mes_long = 31;
             }
         }
-        ret = addData(mes_long, first_day, r, ind, sib, year);
+        ret = addData(mes_long, first_day, r, ind, year);
         first_day = ret[0];
         r = ret[1];
         ind = ret[2];
