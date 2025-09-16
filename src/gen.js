@@ -87,45 +87,37 @@ function calcFirstDay(year){
 
 /* Sequence
 ['Goyo', 'Paty', 'Dulce', 'Elías']; 
-2025 2
-2026 2
-2027 2
-2028 2
-2029 0
-2030 0
-2031 4
-2032 2
-2033 1
-2034 0
-2035 4
-until 2039!
+Match up last december day with first juanary day
+Modify before 2037 ends!
 */
 function calcFirstSibling(y){
     switch(y){
     case 2025:
-        return 2;
+        return 1;
     case 2026:
-        return 2;
+        return 1;
     case 2027:
-        return 2;
+        return 1;
     case 2028:
-        return 2;
+        return 1;
     case 2029:
-        return 0;
+        return 3;
+    case 2030:
+        return 3;
     case 2031:
-        return 1;
+        return 0;
     case 2032:
-        return 1;
+        return 0;
     case 2033:
-        return 1;
+        return 0;
     case 2034:
-        return 2;   
+        return 1;   
     case 2035:
-        return 3;    
+        return 2;    
     case 2036:
-        return 3;   
+        return 2;   
     case 2037:
-        return 0;   
+        return 3;   
     default:
         return 0;
     }
