@@ -27,7 +27,7 @@ function adjustInd(i, rot){
             lim = 6;
             break;
         case 'uncles':
-            lim = 4;
+            lim = 3;
             break;
         default:
             console.log('> Error at index control');
@@ -41,7 +41,7 @@ function adjustInd(i, rot){
 }
 
 function addData(mes_l, nom_s, r, ind, year){
-    const tios = ['Goyo', 'Paty', 'Toña', 'Dulce', 'Elías']; 
+    const tios = ['Goyo', 'Paty', 'Dulce', 'Elías']; 
     let data = [];
     let inicio = 222; // change this to indicate the start
     if (year != 2022){
@@ -62,7 +62,12 @@ function addData(mes_l, nom_s, r, ind, year){
                 data.push([dias[nom_s], d, 'Andrés']);
                 nom_s = adjustInd(nom_s, 'days');
                 break;
+            case 5:
+                data.push([dias[nom_s], d, 'Toña']);
+                nom_s = adjustInd(nom_s, 'days');
+                break;
             default:
+                //console.log(r)
                 data.push([dias[nom_s], d, tios[r]]);
                 nom_s = adjustInd(nom_s, 'days');
                 r = adjustInd(r, 'uncles');
@@ -80,41 +85,39 @@ function calcFirstDay(year){
     return first_week_day;
 }
 
-/*
-2025 2
-2026 0
-2027 3
-2028 2
-2029 2
-2030 0
-2031 4
-2032 2
-2033 1
-2034 0
-2035 4
+/* Sequence
+['Goyo', 'Paty', 'Dulce', 'Elías']; 
+Match up last december day with first juanary day
+Modify before 2037 ends!
 */
 function calcFirstSibling(y){
     switch(y){
-    case 2024:
-        return 3;
     case 2025:
-        return 2;
+        return 1;
+    case 2026:
+        return 1;
     case 2027:
-        return 3;
+        return 1;
     case 2028:
-        return 2;
+        return 1;
     case 2029:
-        return 2;
+        return 3;
+    case 2030:
+        return 3;
     case 2031:
-        return 4;
+        return 0;
     case 2032:
-        return 2;
+        return 0;
     case 2033:
+        return 0;
+    case 2034:
         return 1;   
     case 2035:
-        return 4;    
-    case 2036:
         return 2;    
+    case 2036:
+        return 2;   
+    case 2037:
+        return 3;   
     default:
         return 0;
     }
